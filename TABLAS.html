@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tablas de Multiplicar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-blue-200 flex items-center justify-center h-screen">
+    <div class="bg-white p-6 rounded-xl shadow-lg text-center w-96">
+        <h1 class="text-2xl font-bold text-blue-600">¡Practica las Tablas de Multiplicar!</h1>
+        <p class="text-lg mt-4">¿Cuánto es <span id="num1" class="font-bold"></span> × <span id="num2" class="font-bold"></span>?</p>
+        <input type="number" id="respuesta" class="mt-4 p-2 border rounded w-full text-center text-xl" placeholder="Escribe tu respuesta">
+        <button onclick="verificarRespuesta()" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Comprobar</button>
+        <p id="mensaje" class="mt-4 font-bold text-lg"></p>
+        <p class="mt-2">Puntuación: <span id="puntos" class="font-bold">0</span> | Errores: <span id="errores" class="font-bold">0</span></p>
+        <button onclick="reiniciarJuego()" class="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Reiniciar</button>
+    </div>
+    <audio id="correcto" src="https://www.fesliyanstudios.com/play-mp3/4383"></audio>
+    <audio id="incorrecto" src="https://www.fesliyanstudios.com/play-mp3/4384"></audio>
+    <script>
+        let puntos = 0, errores = 0;
+        let num1, num2;
+
+        function nuevaPregunta() {
+            num1 = Math.floor(Math.random() * 9) + 1;
+            num2 = Math.floor(Math.random() * 9) + 1;
+            document.getElementById('num1').innerText = num1;
+            document.getElementById('num2').innerText = num2;
+            document.getElementById('respuesta').value = '';
+            document.getElementById('mensaje').innerText = '';
+        }
+
+        function verificarRespuesta() {
+            const respuesta = parseInt(document.getElementById('respuesta').value);
+            if (respuesta === num1 * num2) {
+                document.getElementById('mensaje').innerText = '¡Correcto! 🎉';
+                document.getElementById('mensaje').classList.add('text-green-600');
+                document.getElementById('correcto').play();
+                puntos++;
+            } else {
+                document.getElementById('mensaje').innerText = 'Intenta de nuevo 😔';
+                document.getElementById('mensaje').classList.add('text-red-600');
+                document.getElementById('incorrecto').play();
+                errores++;
+            }
+            document.getElementById('puntos').innerText = puntos;
+            document.getElementById('errores').innerText = errores;
+            setTimeout(nuevaPregunta, 1500);
+        }
+
+        function reiniciarJuego() {
+            puntos = 0;
+            errores = 0;
+            document.getElementById('puntos').innerText = puntos;
+            document.getElementById('errores').innerText = errores;
+            nuevaPregunta();
+        }
+
+        nuevaPregunta();
+    </script>
+</body>
+</html>
